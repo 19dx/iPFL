@@ -1,6 +1,9 @@
 # PFL Incentive Market
 ## Overview
-This repository contains the code for the paper "Incentivizing Inclusive Data Contributions in Personalized Federated Learning". 
+This repository contains the code for the paper "Incentivizing Inclusive Data Contributions in Personalized Federated Learning". \
+We propose a novel inclusive Personalized Federated Learning (*iPFL*) framework, to incentivize data contributions from clients with different personalized model requirements and diverse economic utility. Our iPFL leverages a graph-based optimization process to balance the trade-off between model performance and economic utility. We evaluate iPFL on both classification and instruction-tuning tasks, demonstrating its superior performance compared to state-of-the-art baselines.
+![alt text](doc/assets/overview.png)
+
 ### Baselines
 
 | Method | Hyper-parameter | Personalized or not |
@@ -13,10 +16,6 @@ This repository contains the code for the paper "Incentivizing Inclusive Data Co
 | [FedFomo](https://arxiv.org/abs/2012.08565) | $M=6$ | Yes |
 | [pFedGraph](https://openreview.net/forum?id=33fj5Ph3ot) | $\alpha=0.8, \lambda=0.01$ | Yes|
 
-### Economic Utility
-Utility  of client i in each round is:
-$U_i^t=G_i\left(\mathbf{a}_i^t\right)-\sum_{j \in[m]} a_{j i}^t c_i-p_i^t$
-and the collaboration gain is defined as $G_i\left(\mathbf{a}_i\right)=\sqrt{\frac{K_i}{N_i}}-\sqrt{\frac{K_i}{N_i+\sum_{j \in[m]} a_{i j} N_j}}$.
 
 ## Installation Guide
 The developmental version of the package has been tested on the following setting:
@@ -31,10 +30,10 @@ Before installing, ensure you have the following prerequisites installed:
 - Any additional dependencies listed in `requirements.txt`
 
 ### Installation
-Due to the relative independence of classification and instruction-tuning tasks, we use two separate environments for convenience. The latter environment utilizes the off-the-shelf integrated framework [OpenFedLLM](https://github.com/rui-ye/OpenFedLLM).
+Due to the relative independence of classification and instruction-tuning tasks, we use **two separate environments** for convenience. The latter environment utilizes the off-the-shelf integrated framework [OpenFedLLM](https://github.com/rui-ye/OpenFedLLM).
 
 First, clone our iPFL repository \
-```git clone git@github.com:19dx/iPFL.git```. \
+```git clone https://github.com/19dx/iPFL.git```. \
 Then, install the required packages by following the instructions below.
 ### Classification Tasks
 - Packages
@@ -45,6 +44,7 @@ Then, install the required packages by following the instructions below.
     conda activate iPFL
     conda install pytorch=1.10.1 torchvision=0.11.2 torchaudio=0.10.1 cudatoolkit=11.3 -c
     pip install random cvxpy numpy scikit-learn copy scipy
+    pip install -r requirements.txt
     ```
 
 ### Instruction-tuning Tasks
