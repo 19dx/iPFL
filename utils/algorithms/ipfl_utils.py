@@ -5,7 +5,6 @@ import copy
 import cvxpy as cp
 from scipy.optimize import fsolve
 
-from .incentive_utils import Get_Marginal_Cost
 
 def update_graph_ipfl(args, graph_matrix, nets_this_round, gain_list, data_num_list, cost_list, model_difference_matrix):
     index_clientid = list(nets_this_round.keys())

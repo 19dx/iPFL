@@ -4,7 +4,7 @@ import sys
 from .algorithms.pfedgraph_utils import aggregation_pfedgraph_llm, update_graph_pfedgraph_llm
 from .algorithms.fedamp_utils import aggregation_fedamp_llm, update_graph_fedamp_llm
 from .algorithms.ipfl_utils import aggregation_ipfl_cos_llm, update_graph_ipfl
-from .algorithms.cfl_utils import update_graph_cfl
+from .algorithms.cfl_utils import update_graph_cfl_llm
 
 # ========= For Instruction-tuning tasks =========
 def Model_aggregation(args, graph_matrix, nets_dict_this_round, fed_avg_freqs, global_dict, cluster_dict_list):
@@ -35,7 +35,7 @@ def Update_graph_matrix(args, graph_matrix, nets_this_round, global_dict, nets_p
     elif args.alg == 'local':
         return torch.eye(args.n_parties), cluster_indices
     elif args.alg == 'cfl':
-        graph_matrix, cluster_indices = update_graph_cfl(args, graph_matrix, nets_this_round, nets_param_start, cluster_indices)
+        graph_matrix, cluster_indices = update_graph_cfl_llm(args, graph_matrix, nets_this_round, nets_param_start, cluster_indices)
         return graph_matrix, cluster_indices
     elif args.alg == 'pfedgraph':
         return update_graph_pfedgraph_llm(graph_matrix, nets_this_round, global_dict, fed_avg_freqs, 0.8), cluster_indices

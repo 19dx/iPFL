@@ -17,7 +17,7 @@ def Cal_Utility(args, graph_matrix, nets_this_round, gain_list, data_num_list, d
         utility_this_round[id] = utility_id
         print("Client {}: gain={:.5f}, payment={:.5f}, cost={:.2f}, utility={:.5f}".format(id, gain, np.sum(payment_matrix[id]), cost, utility_id))
     utility.append(utility_this_round)
-    return np.mean(utility_this_round[benign_client_list]),payment_matrix
+    return np.mean(utility_this_round[benign_client_list]), payment_matrix
 
 def Init_incentive_properties(args, client_num_samples):
     utility = []
@@ -163,25 +163,3 @@ def Get_Cost(cost_list, graph_matrix, self_id):
     if graph_matrix[self_id, self_id] != 0:
         num_export -= 1
     return cost_list[self_id] * num_export
-
-def Get_Marginal_Cost(K, chosen_clients, index_clientid, data_num_list, cost_list, model_div_list, self_id, type='ADD'): # model_div_list长度为index_clientid的长度
-    marginal_cost = [0] * len(data_num_list) 
-    selected_clients = chosen_clients.copy()
-    selected_clients.append(self_id)
-    if type == 'ADD':
-        for id in index_clientid:
-            if id != self_id and id not in chosen_clients:
-                selected_clients_i = selected_clients.copy()
-                selected_clients_i.append(id)
-                delta_gain = -Get_Gain(K, selected_clients_i, data_num_list, self_id) + Get_Gain(K, selected_clients, data_num_list, self_id)
-                marginal_cost[id] = delta_gain + cost_list[id] + model_div_list[id]*data_num_list[id]/data_num_list[self_id]
-
-    elif type == 'POP':
-        for id in index_clientid:
-            if id in chosen_clients:
-                selected_clients_i = selected_clients.copy()
-                selected_clients_i.remove(id)
-                delta_gain = -Get_Gain(K, selected_clients_i, data_num_list, self_id) + Get_Gain(K, selected_clients, data_num_list, self_id)
-                marginal_cost[id] = delta_gain - cost_list[id] - model_div_list[id]*data_num_list[id]/data_num_list[self_id]
-
-    return marginal_cost
