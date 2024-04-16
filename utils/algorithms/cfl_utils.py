@@ -60,6 +60,12 @@ def reduce_add_average(targets, sources):
             tmp = torch.mean(torch.stack([source[k].data for source in sources]), dim=0).clone()
             v.data += tmp
 
+def reduce_add_average_llm(targets, sources):
+    for target in targets:
+        for k, v in target.items():
+            tmp = torch.mean(torch.stack([source[k].data for source in sources]), dim=0).clone()
+            v.data += tmp
+
 def update_graph_cfl_llm(args, graph_matrix, nets_this_round, nets_param_start, cluster_indices):
     similarity, dW = cal_model_sim_cluster_llm(args.n_parties, nets_this_round, nets_param_start)
     cluster_indices_new = []
@@ -84,7 +90,7 @@ def update_graph_cfl_llm(args, graph_matrix, nets_this_round, nets_param_start, 
     client_clusters = [[nets_this_round[i] for i in idcs] for idcs in cluster_indices]
     gradient_clusters = [[dW[i] for i in idcs] for idcs in cluster_indices]
     for i in range(len(cluster_indices)):
-        reduce_add_average(client_clusters[i], gradient_clusters[i])
+        reduce_add_average_llm(client_clusters[i], gradient_clusters[i])
     # update the graph_matrix
     graph_matrix = np.zeros((args.n_parties, args.n_parties))
     for idc in cluster_indices:
@@ -109,7 +115,7 @@ def update_graph_cfl(args, graph_matrix, nets_this_round, nets_param_start, clus
         print("max_norm", max_norm, "mean_norm", mean_norm)
         if mean_norm < 2.0 and max_norm > 2.5 and len(idc) > 2: # eps_1 = 2.0, eps_2 = 2.5
             c1, c2 = cluster_clients(similarity[idc][:,idc])
-            print("new split", idc, c1, c2)
+            print("new split", idc, idc[c1], idc[c2])
             cluster_indices_new += [idc[c1], idc[c2]]
         else:
             cluster_indices_new += [idc]
