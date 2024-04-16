@@ -81,7 +81,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--base_model_name", "-bm", type=str, default="/GPFS/public/6fdf2e60f86ff2481f2241aaee459f85b5b0bbb9")
+    parser.add_argument("--base_model_name", "-bm", type=str, default="")
     parser.add_argument("--adapter_model_path", "-am", type=str, default="")
     parser.add_argument("--dataset_name", "-d", type=str, default="medqa")
     parser.add_argument("--n_parties", "-n", type=int, default=6)
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     parser.add_argument("--clients_selection", "-cs", type=str, default=None)
 
     args = parser.parse_args()
-    model_root = 'Your_model_path'
+    model_root = 'YOUR_MODEL_PATH'
     model_name = args.adapter_model_path.split('/')[-2].split('_')[1]
     args.base_model_name = os.path.join(model_root, model_name)
     args.dataset_name = args.adapter_model_path.split('/')[-2].split('_')[0]
