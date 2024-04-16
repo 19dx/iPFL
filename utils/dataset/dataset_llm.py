@@ -17,6 +17,10 @@ def get_dataset(dataset_name, local_data_dir):
     elif dataset_name == 'gpt4': # vicgalle/alpaca-gpt4
         dataset_name = local_data_dir + "vicgalle/alpaca-gpt4" if local_data_dir is not None else "vicgalle/alpaca-gpt4"
         dataset = load_dataset(dataset_name, split="train")
+    elif dataset_name == 'dromedary':  # 'zhiqings/dromedary-65b-verbose-clone-v0'
+        dataset_name = local_data_dir + 'zhiqings/dromedary-65b-verbose-clone-v0' if local_data_dir is not None else 'zhiqings/dromedary-65b-verbose-clone-v0'
+        data_files = dataset_name + '/' + 'merged_behavior_clone.json'
+        dataset = load_dataset('json', data_files=data_files, split='train')
     else:
         dataset_name = local_data_dir + dataset_name if local_data_dir is not None else dataset_name
         dataset = load_dataset(dataset_name, split="train")
@@ -37,6 +41,13 @@ def get_eval_dataset(dataset_name, local_data_dir, data_sample_eval):
         dataset = dataset.map(alpaca_format, remove_columns=['input', 'output', 'text'], desc=f"Preprocessing {dataset_name} for unified format.")
         dataset = dataset.shuffle(seed=2023).select(range(len(dataset)-data_sample_eval, len(dataset)))
         print(f'EVALUATION: Alpaca-GPT4: {dataset}')
+    elif dataset_name == 'dromedary':  # 'zhiqings/dromedary-65b-verbose-clone-v0'
+        dataset_name = local_data_dir + 'zhiqings/dromedary-65b-verbose-clone-v0' if local_data_dir is not None else 'zhiqings/dromedary-65b-verbose-clone-v0'
+        data_files = dataset_name + '/' + 'merged_behavior_clone.json'
+        dataset = load_dataset('json', data_files=data_files, split='train')
+        dataset = dataset.map(alpaca_format, remove_columns=['input', 'output'], desc=f"Preprocessing {dataset_name} for unified format.")
+        dataset = dataset.shuffle(seed=2023).select(range(len(dataset)-data_sample_eval, len(dataset)))
+        print(f'EVALUATION: Dromedary: {dataset}')
     else:
         dataset = None
     return dataset
@@ -67,6 +78,18 @@ def process_sft_dataset(dataset_name, dataset, dataset_sample, ratio):
         return dataset
     elif dataset_name == 'gpt4': # vicgalle/alpaca-gpt4
         dataset = dataset.map(alpaca_format, remove_columns=['input', 'output', 'text'], desc=f"Preprocessing {dataset_name} for unified format.")
+        dataset = dataset.shuffle(seed=2023).select(range(dataset_sample))
+        return dataset
+    elif dataset_name == 'dromedary':  # 'zhiqings/dromedary-65b-verbose-clone-v0'
+        def dromedary_format(example):
+            if example['input'] == "":
+                example["instruction"] = example["instruction"]
+            else:
+                example["instruction"] = example["instruction"] + " " + example['input']
+            example["response"] = example["output"].replace("\n\n### User", "")
+            return example   
+
+        dataset = dataset.map(dromedary_format, remove_columns=['input', 'output'], desc=f"Preprocessing {dataset_name} for unified format.")
         dataset = dataset.shuffle(seed=2023).select(range(dataset_sample))
         return dataset
     else:

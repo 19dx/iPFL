@@ -143,7 +143,6 @@ def get_all_pacs_dataloader(args, base_path, batch_size, n_parties, partition, b
     domains = []
     client_num_samples = []
     data_distributions, test_distributions = [], []
-    base_path = os.path.join(base_path, "pacs")
     transforms_train = transforms.Compose([
         transforms.RandomResizedCrop(64, scale=(0.75, 1)),
         transforms.RandomHorizontalFlip(),
