@@ -183,11 +183,11 @@ logger.info(payment_martix)
 best_test_acc_list_str = [str(format(i, '.3f')) for i in best_loss_list]
 utility_str = [str(format(i, '.3f')) for i in np.sum(utility, axis=0)]
 print('>> (Final) Personalized Loss: ', ", ".join(best_test_acc_list_str), '| Avg: {:.5f}'.format(np.mean(best_loss_list)))
-print('>> (Final) Utility: ', ", ".join(utility_str))
+print('>> (Final) Utility: ', ", ".join(utility_str), '| Avg: {:.5f}'.format(np.sum(utility)/fed_args.n_parties))
 print('>> Time: {:.2f} s'.format(time.time() - Start_time))
 print('>> -------- End of {} Training --------'.format(fed_args.alg))
 logger.info('>> (Final) Personalized Loss: ' + ", ".join(best_test_acc_list_str) + '| Avg: {:.5f}'.format(np.mean(best_loss_list)))
-logger.info('>> (Final) Utility: ' + ", ".join(utility_str), '| Avg: {:.5f}'.format(np.sum(utility)/args.n_parties))
+logger.info('>> (Final) Utility: ' + ", ".join(utility_str), '| Avg: {:.5f}'.format(np.sum(utility)/fed_args.n_parties))
 logger.info('>> Time: {:.2f} s'.format(time.time() - Start_time))
 logger.info('>> -------- End of {} Training --------'.format(fed_args.alg))
 # remove the cache file of datasets
