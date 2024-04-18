@@ -1,6 +1,5 @@
 import torch
 import copy
-import random
 import time
 from config import get_args
 args = get_args()
@@ -44,7 +43,7 @@ global_model.load_state_dict(torch.load(args.load_path)) if args.load_path is no
 global_parameters = global_model.state_dict()
 local_models = [copy.deepcopy(global_model) for _ in range(args.n_parties)]
 ditto_models = [copy.deepcopy(global_model) for _ in range(args.n_parties)] if args.alg == 'ditto' else None
-cluster_models = [copy.deepcopy(global_model) for _ in range(args.n_parties)] if args.alg in ('fedamp', 'ipfl', 'pfedgraph') else None
+cluster_models = [copy.deepcopy(global_model) for _ in range(args.n_parties)] if args.alg in ('fedamp', 'pfedgraph') else None
 prox_vectors, model_difference_matrix = None, None
 cluster_indices =  [np.arange(args.n_parties).astype("int")] if args.alg == 'cfl' else None
 
@@ -109,7 +108,7 @@ for round in range(args.comm_round):
         mean_personalized_acc = evaluate_local_models(nets_this_round, test_dl, data_distributions, best_test_acc_list, benign_client_list)
         manipulate_gradient(args, nets_this_round, (freeriders, attackers))
         graph_matrix = update_graph_fedamp(graph_matrix, nets_this_round, global_parameters)   # Graph Matrix is not normalized yet
-        aggregation_fedamp(graph_matrix, nets_this_round, cluster_models)                                                    # Aggregation weight is normalized here
+        aggregation_fedamp(graph_matrix, nets_this_round, cluster_models)                                                    
     
     elif args.alg == 'ipfl':
         local_train_ipfl(args, round, nets_this_round, prox_vectors, train_local_dls, freeriders)
@@ -117,7 +116,7 @@ for round in range(args.comm_round):
         manipulate_gradient(args, nets_this_round, (freeriders, attackers))
         model_difference_matrix = cal_model_difference(args.n_parties, nets_this_round, global_parameters, args.difference_metric)
         graph_matrix = update_graph_ipfl(args, graph_matrix, nets_this_round, gain_list, data_num_list_reported, cost_list_reported, model_difference_matrix)
-        prox_vectors = aggregation_ipfl_cos(args, graph_matrix, nets_this_round, global_model)                                                    # Aggregation weight is normalized here
+        prox_vectors = aggregation_ipfl_cos(args, graph_matrix, nets_this_round, global_model)                                                   
         
     elif args.alg == 'pfedgraph':
         local_train_pfedgraph(args, round, nets_this_round, cluster_models, train_local_dls, freeriders)

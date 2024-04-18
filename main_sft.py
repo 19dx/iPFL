@@ -42,7 +42,10 @@ print('>> Dataset: ', dataset)
 logger.info("-"*30+"Dataset"+"-"*30)
 logger.info(f"| Train: {dataset} | Eval: {eval_dataset} |")
 logger.info("-"*70)
-
+# logger record the ipfl lam and eta
+logger.info(f"K: {fed_args.K}, n_parties: {fed_args.n_parties}, num_rounds: {fed_args.num_rounds}, batch_size: {script_args.batch_size}, seq_length: {script_args.seq_length}")
+if fed_args.alg == 'ipfl':
+    logger.info(f"IPFL: lam={fed_args.ipfl_lam}, eta={fed_args.ipfl_eta}")
 # ===== Split the dataset into clients =====
 local_datasets = split_dataset(fed_args, script_args, dataset, prefix='Training')
 local_eval_datasets = split_dataset(fed_args, script_args, eval_dataset, prefix='Evaluation') if fed_args.local_eval else [None]*fed_args.n_parties
@@ -187,7 +190,7 @@ print('>> (Final) Utility: ', ", ".join(utility_str), '| Avg: {:.5f}'.format(np.
 print('>> Time: {:.2f} s'.format(time.time() - Start_time))
 print('>> -------- End of {} Training --------'.format(fed_args.alg))
 logger.info('>> (Final) Personalized Loss: ' + ", ".join(best_test_acc_list_str) + '| Avg: {:.5f}'.format(np.mean(best_loss_list)))
-logger.info('>> (Final) Utility: ' + ", ".join(utility_str), '| Avg: {:.5f}'.format(np.sum(utility)/fed_args.n_parties))
+logger.info('>> (Final) Utility: ' + ", ".join(utility_str))
 logger.info('>> Time: {:.2f} s'.format(time.time() - Start_time))
 logger.info('>> -------- End of {} Training --------'.format(fed_args.alg))
 # remove the cache file of datasets
