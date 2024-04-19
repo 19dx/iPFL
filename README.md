@@ -63,7 +63,7 @@ Set up the environment: ```conda env create -f llm_environment.yml``` and perfor
 #### Dataset
 | Dataset | Classes | Num of Agents |Training/Test Samples | Data Partitioning |
 | :----: |:----: |:----: |:----: |:----: |
-| [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) | 10 | 9/10 | 50,000/10,000 | synthetic |
+| [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) | 10 | 9/10 | 50,000/10,000 | NIID, Cluster, Skew |
 | [Fashion-MNIST](https://www.kaggle.com/datasets/zalando-research/fashionmnist) | 10 | 9/10 | 60,000/10,000 | NIID, Cluster, Skew |
 | [FEMNIST](https://leaf.cmu.edu/) | 62 | 20 | 3,697,932/ 1,315,228 | natural |
 | [Shakespeare](https://leaf.cmu.edu/) | 80 | 10 | 1,690,000/ 563,000 | natural |
