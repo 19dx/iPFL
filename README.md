@@ -15,7 +15,14 @@ We propose a novel inclusive Personalized Federated Learning (*iPFL*) framework,
 | [CFL](https://arxiv.org/abs/1910.01991) | $\epsilon_1=2.0, \epsilon_2=2.5$ |Yes|
 | [FedFomo](https://arxiv.org/abs/2012.08565) | $M=6$ | Yes |
 | [pFedGraph](https://openreview.net/forum?id=33fj5Ph3ot) | $\alpha=0.8, \lambda=0.01$ | Yes|
-
+### Dataset
+- **Classification Tasks**: CIFAR-10, Fashion-MNIST, FEMNIST, Shakespeare, PACS
+- **Instruction-tuning Tasks**: mixed-Finance (FIQA, TFNS, NWGI), Cofinance (NWGI+CodeAlpaca-20k)
+- All data used in our paper is saved in ```./data/data.zip```, run the following command to unzip the data:
+```
+cd data
+unzip data.zip
+```
 
 ## Installation Guide
 The developmental version of the package has been tested on the following setting:
