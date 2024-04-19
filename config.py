@@ -92,12 +92,9 @@ def get_args():
     elif args.dataset == 'shakespeare':
         args.n_parties = args.leaf_train_num
         args.datadir = args.datadir + 'shakespeare/data/all_data'
-    elif args.dataset == 'fashionmnist':
-        args.datadir = args.datadir + 'fashionmnist'
     elif args.dataset in ('cifar10', 'cifar100'):
         args.datadir = args.datadir + 'cifar'
-    elif args.dataset == 'pacs':
-        args.datadir = args.datadir + 'PACS'
+
 
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
 
