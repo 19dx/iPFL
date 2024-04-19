@@ -18,9 +18,10 @@ We propose a novel inclusive Personalized Federated Learning (*iPFL*) framework,
 ### Dataset
 - **Classification Tasks**: CIFAR-10, Fashion-MNIST, FEMNIST, Shakespeare, PACS
 - **Instruction-tuning Tasks**: mixed-Finance (FIQA, TFNS, NWGI), Cofinance (NWGI+CodeAlpaca-20k)
-- All data used in our paper is saved in ```./data/data.zip```, run the following command to unzip the data:
+- All data used in our paper is saved in [data.zip](https://drive.google.com/file/d/1NNcRxARJeTKdRc7u71QC5ZhIJ5kFd6Ub/view?usp=sharing), run the following command to download and unzip the data.zip:
 ```
 cd data
+wget https://drive.google.com/uc?id=1NNcRxARJeTKdRc7u71QC5ZhIJ5kFd6Ub&export=download
 unzip data.zip
 ```
 
