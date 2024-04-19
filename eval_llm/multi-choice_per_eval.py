@@ -7,7 +7,9 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import time
 from tqdm import tqdm
 import sys 
-from ..utils.dataset.dataset_llm import get_eval_dataset, split_dataset
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from utils.dataset.dataset_llm import get_eval_dataset
+from utils.utils import split_dataset
 
 TEMPLATE = """Below is an instruction that describes a task. Write a response that appropriately completes the request.
 
@@ -31,19 +33,10 @@ def eval(model, tokenizer, test_dataset, device='cuda'):
             cors += int(decoded_outputs == sample['response'])
     return cors/len(test_dataset)
 
-def get_options(data):
-    if "option" in data:
-        return list(data['option'].values())
-    else:
-        options = []
-        for key in ['opa', 'opb', 'opc', 'opd']:
-            options.append(data[key])
-        return options
-
 
 def main(args):
     # ====== Dataset ======
-    eval_dataset = get_eval_dataset(args.dataset_name, ratio=1)
+    eval_dataset = get_eval_dataset(args.dataset_name, 'data_all/', args.eval_sample_size)
     local_eval_datasets = split_dataset(args, args, eval_dataset, prefix='Evaluation')
     tokenizer = AutoTokenizer.from_pretrained(args.base_model_name)
     # ====== Model Config ======
@@ -81,7 +74,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--base_model_name", "-bm", type=str, default="")
+    parser.add_argument("--model_root", "-bm", type=str, default="YOUR_MODEL_PATH")
     parser.add_argument("--adapter_model_path", "-am", type=str, default="")
     parser.add_argument("--dataset_name", "-d", type=str, default="medqa")
     parser.add_argument("--n_parties", "-n", type=int, default=6)
@@ -91,9 +84,8 @@ if __name__ == "__main__":
     parser.add_argument("--clients_selection", "-cs", type=str, default=None)
 
     args = parser.parse_args()
-    model_root = 'YOUR_MODEL_PATH'
     model_name = args.adapter_model_path.split('/')[-2].split('_')[1]
-    args.base_model_name = os.path.join(model_root, model_name)
+    args.base_model_name = os.path.join(args.model_root, model_name)
     args.dataset_name = args.adapter_model_path.split('/')[-2].split('_')[0]
     args.n_parties = int(args.adapter_model_path.split('/')[-2].split('_')[2].split('c')[1])
     print(args)
