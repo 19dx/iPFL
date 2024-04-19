@@ -7,7 +7,7 @@ model='simplecnn'
 iternum=200
 C=1
 sample_fraction=1
-dir_path=./output_test/${dataset}_${data_partition}_beta${beta}_${model}_it${iternum}_c${client}_p${sample_fraction}_C${C}
+dir_path=./output/${dataset}_${data_partition}_beta${beta}_${model}_it${iternum}_c${client}_p${sample_fraction}_C${C}
 if [ ! -d $dir_path ]; then
     mkdir $dir_path
 else
