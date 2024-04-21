@@ -75,8 +75,21 @@ Set up the environment: ```conda env create -f llm_environment.yml``` and perfor
 LSTM (for Shakespeare), Resnet20 (for PACS), Simple-CNN (for others).
 
 #### Quick Start
-``` sh run_scripts/run_cifar10_baselines.sh ``` \
-The training log will be saved in ```./output/```. You can change the dataset and model by modifying the corresponding script.
+1. **Basic experiments** (Fig.2):
+- Activate the environment: ```conda activate ipfl```
+- Run the following command to train the model on CIFAR-10 dataset: \
+```sh run_scripts/run_cifar10_baselines.sh``` 
+- Note that the data partitioning for CIFAR-10 and Fashion-MNIST is the argument *data_partition*, the value can be *noniid*, *cluster-3-10*, *noniid-skew-5*, respectively representing NIID, Cluster and Skew setting.
+The training log will be saved in ```./output/```. You can change the dataset and model by modifying the corresponding varibles in script.
+2. **Inclusive experiment** with 12 proposed 4 types (*Trader*, *Buyer*, *Seller*, and *Attacker*) of clients:
+- To observe the incentive mechanisms in our inclusive market on CIFAR-10 dataset:
+```sh run_scripts/run_cifar10_playground.sh```
+3. **Model posioning experiments** (Fig.4):
+- Note that the model poisoning strategies considered in our paper is (1) shuffling trained parameters, (2) flipping the sign of updates, (3) uploading random gaussian noise and (4) uploading the same value for all elements. We rather prefer cluster them into 2 groups based on whether local training for the model poisoning is necessary. We call the groups of malicious clients in our code "attacker" and "freerider" respectively and set the corresponding hyperparameters.
+- Run script for simplicity: ```sh run_scripts/run_cifar10_robustness.sh```
+4. **Liars experiments** (Table 2):
+- Use *liar_ratio* to control the ratio of liars hidden in clients who exaggerate its cost or dataset size
+- Run ```python main.py --alg "ipfl" --liar_ratio 0.1 --liar_type cost --liar_exaggerate_ratio 2```
 
 ### Instruction-tuning Tasks
 #### Dataset: 
@@ -85,8 +98,9 @@ The training log will be saved in ```./output/```. You can change the dataset an
 - Please move the datasets to a certain folder and pass the path to --local_data_dir.
 - Model: We use pretrained [Llama2-7B](https://huggingface.co/meta-llama/Llama-2-7b) as the initial model for federated learning.
 #### Quick Start
-- For mixed-Finance dataset, run ```sh run_scripts/run_finance.sh```
-- For Cofinance dataset, run ```sh run_scripts/run_cofinance.sh```
+- Activate the environment: ```conda activate fedllm```
+- For mixed-Finance dataset, run ```sh run_scripts/run_finance.sh``` (Table 1)
+- For Cofinance dataset, run ```sh run_scripts/run_cofinance.sh``` (Table 1)
 - Note: setting for K, c and hyperparameters of iPFL default to the corresponding scripts or refer to our paper.
 #### Evaluation
 - For finance dataset (FIQA, TNFS, NWGI), use their own test set to evaluate the performance in ```./eval_llm/```. You can simply run ```sh eval_llm/run_evaluate.sh``` to obtain the test accuracy for each client.
