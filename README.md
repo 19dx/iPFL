@@ -75,13 +75,13 @@ Set up the environment: ```conda env create -f llm_environment.yml``` and perfor
 LSTM (for Shakespeare), Resnet20 (for PACS), Simple-CNN (for others).
 
 #### Quick Start
-1. **Basic experiments** (Fig.2):
+1. **Basic experiments** (Fig.2, Fig.3):
 - Activate the environment: ```conda activate ipfl```
 - Run the following command to train the model on CIFAR-10 dataset: \
 ```sh run_scripts/run_cifar10_baselines.sh``` 
 - Note that the data partitioning for CIFAR-10 and Fashion-MNIST is the argument *data_partition*, the value can be *noniid*, *cluster-3-10*, *noniid-skew-5*, respectively representing NIID, Cluster and Skew setting.
 The training log will be saved in ```./output/```. You can change the dataset and model by modifying the corresponding varibles in script.
-2. **Inclusive experiment** with 12 proposed 4 types (*Trader*, *Buyer*, *Seller*, and *Attacker*) of clients:
+2. **Inclusive experiment** (Fig.5) with 12 proposed 4 types (*Trader*, *Buyer*, *Seller*, and *Attacker*) of clients:
 - To observe the incentive mechanisms in our inclusive market on CIFAR-10 dataset:
 ```sh run_scripts/run_cifar10_playground.sh```
 3. **Model posioning experiments** (Fig.4):
